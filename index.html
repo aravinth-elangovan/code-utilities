@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Utilities - Lint, Minify, Beautify</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- Code Mirror for code editor -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/monokai.min.css">
+    <!-- Bootstrap for styling -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Add Content Security Policy meta tag -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net https://*.adtrafficquality.google https://*.google.com 'unsafe-inline' 'unsafe-eval'; style-src 'self' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https://googleads.g.doubleclick.net https://*.google.com https://*.doubleclick.net https://adservice.google.com https://*.adtrafficquality.google; frame-src 'self' https://googleads.g.doubleclick.net https://*.doubleclick.net https://*.adtrafficquality.google https://*.google.com;">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9845977529220948" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <a class="navbar-brand" href="#">Code Utilities</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#" data-tool="lint">Lint</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-tool="minify">Minify</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-tool="beautify">Beautify</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container my-4">
+        <!-- Add notification area below the main container header -->
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <div id="notification-area" class="alert alert-warning" style="display: none;"></div>
+            </div>
+        </div>
+        
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 id="current-tool">Lint Code</h5>
+                        <!-- In the language-select dropdown -->
+                        <select id="language-select" name="language-select" class="form-select" style="width: auto;">
+                            <option value="json">JSON</option>
+                            <option value="javascript">JavaScript</option>
+                            <option value="html">HTML</option>
+                            <option value="css">CSS</option>
+                            <option value="python">Python</option>
+                            <option value="java">Java</option>
+                            <option value="go">Go</option>
+                            <option value="xml">XML</option>
+                            <option value="ruby">Ruby</option>
+                            <option value="php">PHP</option>
+                        </select>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6>Input</h6>
+                                <textarea id="code-input" name="code-input"></textarea>
+                            </div>
+                            <div class="col-md-6">
+                                <h6>Output</h6>
+                                <textarea id="code-output" name="code-output" readonly></textarea>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-12 text-center">
+                                <button id="process-btn" name="process-btn" class="btn btn-primary">Process</button>
+                                <button id="copy-btn" name="copy-btn" class="btn btn-secondary ms-2">Copy Output</button>
+                                <button id="clear-btn" name="clear-btn" class="btn btn-danger ms-2">Clear</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Google Ad Banner (Top) -->
+        <div class="row mb-4">
+            <div class="col-md-12 text-center">
+                <div class="ad-container">
+                    <!-- Code-Utilities Mid -->
+                    <div style="background-color: #f8f9fa; padding: 10px; border: 1px solid #dee2e6;">
+                        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9845977529220948"
+                            crossorigin="anonymous"></script>
+                        <!-- Code-Utilities Mid -->
+                        <ins class="adsbygoogle"
+                            id="top-ad"
+                            name="top-ad"
+                            style="display:block"
+                            data-ad-client="ca-pub-9845977529220948"
+                            data-ad-slot="1634942451"
+                            data-ad-format="auto"
+                            data-full-width-responsive="true"></ins>
+                        <script>
+                            (adsbygoogle = window.adsbygoogle || []).push({});
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>How to Use</h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="lint-instructions" name="lint-instructions" >
+                            <h6>Linting</h6>
+                            <p>Linting helps identify and fix problems in your code. Select your language, paste your code, and click "Process" to check for errors and warnings.</p>
+                        </div>
+                        <div id="minify-instructions" name="minify-instructions" style="display: none;">
+                            <h6>Minifying</h6>
+                            <p>Minification removes unnecessary characters from code without changing functionality, making it smaller for faster loading. Select your language, paste your code, and click "Process" to minify.</p>
+                        </div>
+                        <div id="beautify-instructions" name="beautify-instructions" style="display: none;">
+                            <h6>Beautifying</h6>
+                            <p>Beautification formats your code with proper indentation and spacing for better readability. Select your language, paste your code, and click "Process" to beautify.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Google Ad Banner (Bottom) -->
+        <div class="row mt-4">
+            <div class="col-md-12 text-center">
+                <div class="ad-container">
+                    <!-- Replace with your actual Google AdSense code -->
+                    <div style="background-color: #f8f9fa; padding: 10px; border: 1px solid #dee2e6;">
+                        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9845977529220948"
+                            crossorigin="anonymous"></script>
+                        <!-- Code-Utilities Bottom -->
+                        <ins class="adsbygoogle"
+                            id="bottom-ad"
+                            name="bottom-ad"
+                            style="display:block"
+                            data-ad-client="ca-pub-9845977529220948"
+                            data-ad-slot="6423600245"
+                            data-ad-format="auto"
+                            data-full-width-responsive="true"></ins>
+                        <script>
+                            (adsbygoogle = window.adsbygoogle || []).push({});
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-dark text-white py-3 mt-5">
+        <div class="container text-center">
+            <p class="mb-0">© 2025 Code Utilities. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- CodeMirror -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/javascript/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/htmlmixed/htmlmixed.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/css/css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/python/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/go/go.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/xml/xml.min.js"></script>
+    <!-- Add these script tags before the closing </body> tag -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/ruby/ruby.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/php/php.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/mode/simple.min.js"></script>
+    
+    <!-- Libraries for processing code -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.14.7/beautify.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.14.7/beautify-html.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.14.7/beautify-css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsonlint/1.6.0/jsonlint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jshint/2.13.5/jshint.min.js"></script>
+    <script src="js/solidity-mode.js"></script>
+    
+    <!-- Custom JS -->
+    <script src="js/main.js"></script>
+</body>
+</html>
